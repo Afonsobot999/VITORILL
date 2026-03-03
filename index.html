@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mensagem Especial</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* CORAÇÕES SUBINDO */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  color: #ff3860;
+  font-size: 20px;
+  animation: subir 4s linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+@keyframes subir {
+  0% { transform: translateY(0) scale(1); opacity: 0.9; }
+  100% { transform: translateY(-120vh) scale(1.8); opacity: 0; }
+}
+
+.start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.dog-emoji {
+  font-size: 80px;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  animation: pulse 1.5s infinite ease-in-out;
+  transition: transform .3s;
+}
+
+.dog-emoji:hover { transform: scale(1.1); }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.card {
+  display: none;
+  max-width: 90%;
+  width: 380px;
+  padding: 35px 25px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  animation: abrirCaixa 0.8s ease forwards;
+  transform-origin: top;
+}
+
+@keyframes abrirCaixa {
+  0% { transform: scaleY(0); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+h1 {
+  color: #d14d72;
+  font-size: 28px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  min-height: 35px;
+  border-right: 2px solid #d14d72;
+  width: fit-content;
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.texto-fixo {
+  font-size: 16px;
+  color: #ffffff;
+  margin-top: 10px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+p {
+  font-size: 20px;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  margin-top: 20px;
+  min-height: 50px;
+}
+
+.btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  background: #d14d72;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.btn:hover {
+  background: #b73b5e;
+  transform: translateY(-2px);
+}
+</style>
+</head>
+<body>
+
+<script>
+// CORAÇÕES SUBINDO CONTINUAMENTE
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "❤️";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (20 + Math.random() * 30) + "px";
+  heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}, 400);
+
+// CORAÇÕES AO CLICAR
+document.addEventListener("click", (e) => {
+  const boom = document.createElement("div");
+  boom.classList.add("heart");
+  boom.innerHTML = "💖";
+
+  boom.style.left = e.clientX + "px";
+  boom.style.top = e.clientY + "px";
+  boom.style.position = "absolute";
+  boom.style.animationDuration = (1 + Math.random()) + "s";
+  boom.style.fontSize = (15 + Math.random() * 25) + "px";
+
+  document.body.appendChild(boom);
+  setTimeout(() => boom.remove(), 2000);
+});
+</script>
+
+<button id="startBtn" class="start">
+<span class="dog-emoji">🐶</span>
+</button>
+
+<div class="card">
+<h1 id="titulo"></h1>
+
+<p class="texto-fixo">
+Criei este site para guardar todos os detalhes que eu amo em você. Cada vez que percebo algo que me encanta — por menor que seja — eu venho aqui e acrescento.<br><br>
+É o meu jeito de eternizar esses momentos e, quem sabe, arrancar mais um sorriso seu.
+</p>
+
+<button onclick="novaFrase()" class="btn">Nova frase</button>
+<p id="frase"></p>
+</div>
+
+<script>
+const frases = [
+"Eu amo quando você joga a cabeça pro lado pra tirar o cabelo dos olhos… é um gesto tão simples, mas eu acho a coisa mais linda do mundo.",
+"Eu acho muito daora quando você faz aquela mini dancinha quando come algo que gosta muito. Seu jeitinho espontâneo me faz sorrir na hora.",
+"Eu amo o jeito que você me encara. Seus olhos me dão uma sensação que eu nunca senti antes, é como se tudo ao redor simplesmente sumisse.",
+"Eu amo o seu cheiro. Se eu pudesse, ficava horas só ali, pertinho, sentindo você.",
+"Sempre que você me pergunta “por queee?” desse seu jeito, eu fico até perdido, esqueço o que eu tava fazendo.",
+"‘Vitória’ é conquista — e você é a mais linda que eu poderia ter.",
+"Se eu fosse te definir com código: vitoria = infinito.",
+"Eu poderia escrever mil códigos, mas nenhum explicaria o quanto você é incrível."
+];
+
+function novaFrase() {
+const escolhida = frases[Math.floor(Math.random() * frases.length)];
+document.getElementById('frase').innerText = escolhida;
+}
+
+function digitar(texto, elemento, velocidade = 70) {
+elemento.textContent = "";
+let i = 0;
+function escrever() {
+  if (i < texto.length) {
+    elemento.textContent += texto.charAt(i);
+    i++;
+    setTimeout(escrever, velocidade);
+  }
+}
+escrever();
+}
+
+function coracoesExplodindoCentro() {
+for (let i = 0; i < 12; i++) {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💖";
+
+  heart.style.left = "50vw";
+  heart.style.top = "50vh";
+  heart.style.position = "fixed";
+  heart.style.animationDuration = (1 + Math.random()) + "s";
+  heart.style.fontSize = (20 + Math.random() * 40) + "px";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 2000);
+}
+}
+
+document.getElementById('startBtn').onclick = () => {
+const card = document.querySelector('.card');
+const titulo = document.getElementById('titulo');
+
+document.getElementById('startBtn').style.display = 'none';
+card.style.display = "block";
+
+card.style.animation = "none";
+void card.offsetWidth;
+card.style.animation = "abrirCaixa 0.8s ease forwards";
+
+setTimeout(() => coracoesExplodindoCentro(), 300);
+
+digitar("Oi Vitória ❤️", titulo, 160);
+};
+</script>
+
+</body>
+</html>
