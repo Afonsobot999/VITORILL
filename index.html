@@ -133,6 +133,46 @@ p {
   background: #b73b5e;
   transform: translateY(-2px);
 }
+
+/* NOVOS ESTILOS DO BOTÃO DE AMEI */
+.like-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-like {
+  background: transparent;
+  border: 2px solid #d14d72;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 18px;
+  color: #d14d72;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-like:hover {
+  background: #d14d72;
+  color: white;
+  transform: scale(1.05);
+}
+
+#contadorAmei {
+  font-size: 18px;
+  color: #d14d72;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 5px 12px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 </style>
 </head>
 <body>
@@ -160,6 +200,7 @@ document.addEventListener("click", (e) => {
 
   boom.style.left = e.clientX + "px";
   boom.style.top = e.clientY + "px";
+  boom.style.bottom = "auto"; /* Corrige o conflito de posição */
   boom.style.position = "absolute";
   boom.style.animationDuration = (1 + Math.random()) + "s";
   boom.style.fontSize = (15 + Math.random() * 25) + "px";
@@ -169,7 +210,7 @@ document.addEventListener("click", (e) => {
 });
 </script>
 
-<button id="startBtn" class="start">
+<button id="startBtn" class="start" aria-label="Abrir mensagem surpresa">
 <span class="dog-emoji">🐶</span>
 </button>
 
@@ -183,6 +224,13 @@ Criei este site para guardar todos os detalhes que eu amo em você. Cada vez que
 
 <button onclick="novaFrase()" class="btn">Nova frase</button>
 <p id="frase"></p>
+
+<!-- NOVO: BOTÃO E CONTADOR DE AMEI -->
+<div class="like-container">
+  <button id="btnAmei" class="btn-like">❤️ Amei</button>
+  <span id="contadorAmei">0</span>
+</div>
+
 </div>
 
 <script>
@@ -192,62 +240,90 @@ const frases = [
 "Eu amo o jeito que você me encara. Seus olhos me dão uma sensação que eu nunca senti antes, é como se tudo ao redor simplesmente sumisse.",
 "Eu amo o seu cheiro. Se eu pudesse, ficava horas só ali, pertinho, sentindo você.",
 "Sempre que você me pergunta “por queee?” desse seu jeito, eu fico até perdido, esqueço o que eu tava fazendo.",
-"‘Vitória’ é conquista — e você é a mais linda que eu poderia ter.",
+"Vitória’ é conquista — e você é a mais linda que eu poderia ter.",
 "Se eu fosse te definir com código: vitoria = infinito.",
-"Eu poderia escrever mil códigos, mas nenhum explicaria o quanto você é incrível."
-"Eu amo como sua voz suaviza toda vez que vai falar comigo, ae como se voce tivesse um tom de voz diferente para falar comigo"
-"Você é meu conto favorito, Mor. É tipo um universo infinito que eu acordo todo dia querendo explorar um pouco mais. Ainda tenho muito o que aprender sobre você, mas cada pedacinho desse seu mundo que eu descubro me faz ter certeza que eu quero ficar aqui pra sempre."
+"Eu poderia escrever mil códigos, mas nenhum explicaria o quanto você é incrível.",
+"Eu amo como sua voz suaviza toda vez que vai falar comigo, é como se você tivesse um tom de voz diferente para falar comigo.",
+"Você é meu conto favorito, Mor. É tipo um universo infinito que eu acordo todo dia querendo explorar um pouco mais. Ainda tenho muito o que aprender sobre você, mas cada pedacinho desse seu mundo que eu descubro me faz ter certeza que eu quero ficar aqui pra sempre.",
+"Sabe a rosa do Pequeno Príncipe? Ele cuidava dela como se fosse o tesouro mais raro do mundo. Com você eu me sinto assim. Quero te proteger de todo o 'vento forte' e de qualquer coisa que tente tirar seu sorriso. Você é o meu universo e eu vou sempre cuidar do que é nosso.",
+"Sabe o que eu mais amo? Aquele seu cheirinho que fica em mim depois que a gente se vê. Me traz uma paz que eu nem sei explicar, parece que o mundo lá fora para e tudo fica bem. É meu porto seguro real.",
+"Eu amo o jeito que você me olha, parece que você consegue ler o que eu tô sentindo sem eu precisar falar nada.",
+"Engraçado como antes de você eu achava que sabia o que era paz, mas agora eu sei que a paz tem o seu nome.",
+"Eu quero ser o seu porto seguro, o lugar onde você pode soltar todo o peso do mundo e só descansar.",
+"O mundo lá fora é barulhento demais, mas o seu abraço é o único lugar que tem o silêncio e a paz que eu preciso."
 ];
 
+// VARIÁVEL PARA EVITAR REPETIÇÃO
+let ultimaFrase = "";
+
 function novaFrase() {
-const escolhida = frases[Math.floor(Math.random() * frases.length)];
-document.getElementById('frase').innerText = escolhida;
+  let escolhida = frases[Math.floor(Math.random() * frases.length)];
+  
+  // CONTINUA SORTEANDO ATÉ SER DIFERENTE DA ÚLTIMA
+  while (escolhida === ultimaFrase) {
+    escolhida = frases[Math.floor(Math.random() * frases.length)];
+  }
+  
+  ultimaFrase = escolhida; // Salva a nova frase para a próxima rodada
+  document.getElementById('frase').innerText = escolhida;
 }
 
 function digitar(texto, elemento, velocidade = 70) {
-elemento.textContent = "";
-let i = 0;
-function escrever() {
-  if (i < texto.length) {
-    elemento.textContent += texto.charAt(i);
-    i++;
-    setTimeout(escrever, velocidade);
+  elemento.textContent = "";
+  let i = 0;
+  function escrever() {
+    if (i < texto.length) {
+      elemento.textContent += texto.charAt(i);
+      i++;
+      setTimeout(escrever, velocidade);
+    }
   }
-}
-escrever();
+  escrever();
 }
 
 function coracoesExplodindoCentro() {
-for (let i = 0; i < 12; i++) {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML = "💖";
+  for (let i = 0; i < 12; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
 
-  heart.style.left = "50vw";
-  heart.style.top = "50vh";
-  heart.style.position = "fixed";
-  heart.style.animationDuration = (1 + Math.random()) + "s";
-  heart.style.fontSize = (20 + Math.random() * 40) + "px";
+    heart.style.left = "50vw";
+    heart.style.top = "50vh";
+    heart.style.bottom = "auto"; /* Corrige o conflito de posição */
+    heart.style.position = "fixed";
+    heart.style.animationDuration = (1 + Math.random()) + "s";
+    heart.style.fontSize = (20 + Math.random() * 40) + "px";
 
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 2000);
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+  }
 }
-}
+
+// LÓGICA DO CONTADOR DE AMEI
+let curtidas = 0;
+document.getElementById('btnAmei').addEventListener('click', (e) => {
+  e.stopPropagation(); // Evita que o clique do botão dispare o clique da tela toda junto
+  curtidas++;
+  document.getElementById('contadorAmei').innerText = curtidas;
+  coracoesExplodindoCentro(); // Solta uma explosão de corações ao curtir!
+});
 
 document.getElementById('startBtn').onclick = () => {
-const card = document.querySelector('.card');
-const titulo = document.getElementById('titulo');
+  const card = document.querySelector('.card');
+  const titulo = document.getElementById('titulo');
 
-document.getElementById('startBtn').style.display = 'none';
-card.style.display = "block";
+  document.getElementById('startBtn').style.display = 'none';
+  card.style.display = "block";
 
-card.style.animation = "none";
-void card.offsetWidth;
-card.style.animation = "abrirCaixa 0.8s ease forwards";
+  card.style.animation = "none";
+  void card.offsetWidth;
+  card.style.animation = "abrirCaixa 0.8s ease forwards";
 
-setTimeout(() => coracoesExplodindoCentro(), 300);
+  setTimeout(() => coracoesExplodindoCentro(), 300);
 
-digitar("Oi Vitória ❤️", titulo, 160);
+  digitar("Oi Vitória ❤️", titulo, 160);
+  
+  setTimeout(novaFrase, 1500); 
 };
 </script>
 
